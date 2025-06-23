@@ -37,7 +37,7 @@ Thus, I wanted to build something **smaller**, **faster**, and **more efficient*
 ### Build Instructions
 
    ```bash
-   git clone https://github.com/yourusername/qim-browser.git
+   git clone https://github.com/Purkit/QimBrowser.git
    cd qim-browser
    mkdir build
    cd build
