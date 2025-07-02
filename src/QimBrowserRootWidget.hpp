@@ -28,9 +28,6 @@ private:
         .height = 1.0f,
     };
 
-    Frame m_vtabbarFrame;
-    Frame m_htabbarFrame;
-    Frame m_browserViewportFrame;
     QimBaseWidget *vtabWidget;
     QimBaseWidget *browserViewportWidget;
 

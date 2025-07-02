@@ -13,52 +13,32 @@ namespace Qim {
 class QimBaseWidget : public QWidget {
 public:
     QimBaseWidget(int x, int y, int w, int h, QWidget *parent = nullptr)
-        : QWidget(parent), pos_x(x), pos_y(y), m_width(w), m_height(h) {
-        QWidget::resize(w, h);
-        QWidget::move(pos_x, pos_y);
-    }
+        : QWidget(parent) {
+        m_absolutePosition = {.x = x, .y = y};
+        m_size             = {.width = w, .height = h};
 
-    QimBaseWidget(Frame &frame, QWidget *parent = nullptr)
-        : QWidget(parent), pos_x(frame.absolute_position.x),
-          pos_y(frame.absolute_position.y), m_width(frame.absolute_size.width),
-          m_height(frame.absolute_size.height) {
         this->Update();
     }
 
-    void SetSize(int width, int heigth) {
-        m_width  = width;
-        m_height = heigth;
-    }
+    QimBaseWidget(QWidget *parent = nullptr) : QWidget(parent) {}
 
-    void SetPosition(int x, int y) {
-        pos_x = x;
-        pos_y = y;
-    }
+    void SetSize(int w, int h) { m_size = {.width = w, .height = h}; }
+
+    void SetPosition(int x, int y) { m_absolutePosition = {.x = x, .y = y}; }
 
     void Update() {
-        QWidget::resize(m_width, m_height);
-        QWidget::move(pos_x, pos_y);
+        QWidget::resize(m_size.width, m_size.height);
+        QWidget::move(m_absolutePosition.x, m_absolutePosition.y);
     }
 
-    void Update(Frame &frame) {
-        pos_x    = frame.absolute_position.x;
-        pos_y    = frame.absolute_position.y;
-        m_width  = frame.absolute_size.width;
-        m_height = frame.absolute_size.height;
-
-        QWidget::resize(m_width, m_height);
-        QWidget::move(pos_x, pos_y);
-    }
-
-    int getWidgetWidth() { return QWidget::width(); }
-
-    int getWidgetHeight() { return QWidget::height(); }
+    int geWidth() { return m_size.width; }
+    int getHeight() { return m_size.height; }
 
 protected:
     void paintEvent(QPaintEvent *event) override {
         QPainter painter(this);
         painter.setRenderHint(QPainter::Antialiasing);
-        QRect rect(0, 0, m_width, m_height);
+        QRect rect(0, 0, m_size.width, m_size.height);
 
         QLinearGradient gradient(rect.topLeft(), rect.bottomRight());
         gradient.setColorAt(0, QColor(0, 128, 255)); // light blue
@@ -76,8 +56,8 @@ protected:
     }
 
 private:
-    int pos_x, pos_y;
-    int m_width, m_height;
+    Point m_absolutePosition;
+    Size m_size;
 };
 
 } // namespace Qim
